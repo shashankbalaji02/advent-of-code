@@ -32,8 +32,10 @@ fn read_input(filename: &str) -> (Vec<u32>, Vec<u32>) {
     (a, b)
 }
 
+const INPUT_FILENAME: &str = "inputs/1.txt";
+
 fn main() {
-    let (mut a, mut b) = read_input("input.txt");
+    let (mut a, mut b) = read_input(INPUT_FILENAME);
     println!("{}", task(&mut a, &mut b));                                    
 }
 
@@ -52,7 +54,7 @@ mod tests {
     
     #[bench]
     fn iter_algo_bench(bencher: &mut Bencher) {
-        let (mut a, mut b) = read_input("input.txt");
+        let (mut a, mut b) = read_input(INPUT_FILENAME);
         a.sort();
         b.sort();
         assert_eq!(a.len(), b.len(), "Columns are of unequal length");
@@ -61,7 +63,7 @@ mod tests {
     
     #[bench]
     fn for_loop_algo_bench(bencher: &mut Bencher) {
-        let (mut a, mut b) = read_input("input.txt");
+        let (mut a, mut b) = read_input(INPUT_FILENAME);
         a.sort();
         b.sort();
         assert_eq!(a.len(), b.len(), "Columns are of unequal length");

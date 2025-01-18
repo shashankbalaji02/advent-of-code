@@ -37,8 +37,10 @@ fn task(input: &Vec<Vec<u32>>) -> u32 {
     safe_records
 }
 
+const INPUT_FILENAME: &str = "inputs/2.txt";
+
 fn main() {
-    let input = parse_input(&read_to_string("input.txt").expect("Failed to read input"));
+    let input = parse_input(&read_to_string(INPUT_FILENAME).expect("Failed to read input"));
     println!("{}", task(&input));
 }
 
@@ -117,7 +119,7 @@ mod tests {
 
     #[test]
     fn test_equivalence() {
-        let input = read_to_string("input.txt").expect("Failed to read input");
+        let input = read_to_string(INPUT_FILENAME).expect("Failed to read input");
         let answer = task(&parse_input(&input));
         assert_eq!(combined(&input), answer);
         assert_eq!(split_loop_naive(&parse_input(&input)), answer);
@@ -125,25 +127,25 @@ mod tests {
 
     #[bench]
     fn a_combined_bench(bencher: &mut Bencher) {
-        let input = read_to_string("input.txt").expect("Failed to read input");
+        let input = read_to_string(INPUT_FILENAME).expect("Failed to read input");
         bencher.iter(|| combined(&input))
     }
 
     #[bench]
     fn a_naive_bench(bencher: &mut Bencher) {
-        let input = read_to_string("input.txt").expect("Failed to read input");
+        let input = read_to_string(INPUT_FILENAME).expect("Failed to read input");
         bencher.iter(|| task(&parse_input(&input)))
     }
 
     #[bench]
     fn b_split_loop_naive_bench(bencher: &mut Bencher) {
-        let input = parse_input(&read_to_string("input.txt").expect("Failed to read input"));
+        let input = parse_input(&read_to_string(INPUT_FILENAME).expect("Failed to read input"));
         bencher.iter(|| split_loop_naive(&input))
     }
 
     #[bench]
     fn b_naive_bench(bencher: &mut Bencher) {
-        let input = parse_input(&read_to_string("input.txt").expect("Failed to read input"));
+        let input = parse_input(&read_to_string(INPUT_FILENAME).expect("Failed to read input"));
         bencher.iter(|| task(&input))
     }
 }
