@@ -1,3 +1,5 @@
+use std::iter::once;
+
 pub fn parse_input(input: &String) -> Vec<Vec<u32>> {
     let mut result = Vec::new();
     input
@@ -36,36 +38,34 @@ pub fn combined(input: &String) -> u32 {
     input
         .lines()
         .map(|line| {
-            let mut iter = line
+            let mut nums = line
                 .split(' ')
                 .map(|number| number.parse::<u32>().expect("Failed to parse number"));
-            match iter.next() {
-                Some(mut first) => match iter.next() {
-                    Some(mut second) => {
-                        let increasing = second > first;
-                        loop {
-                            let diff = second as i32 - first as i32;
-                            if increasing && 1 <= diff && diff <= 3
-                                || !increasing && -3 <= diff && diff <= -1
-                            {
-                                match iter.next() {
-                                    Some(next) => {
-                                        first = second;
-                                        second = next;
-                                    }
-                                    None => {
-                                        return 1;
-                                    }
-                                }
-                                continue;
-                            }
-                            return 0;
-                        }
-                    }
-                    None => 1,
-                },
-                None => 1,
+            
+            let first = match nums.next() {
+                Some(n) => n,
+                None => return 1,
+            };
+            
+            let second = match nums.next() {
+                Some(n) => n,
+                None => return 1,
+            };
+            
+            let increasing = second > first;
+            let mut prev_pair = (first, second);
+            
+            for next in nums.chain(once(0)) {
+                let diff = prev_pair.1 as i32 - prev_pair.0 as i32;
+                if increasing && 1 <= diff && diff <= 3 ||
+                  !increasing && -3 <= diff && diff <= -1 {
+                    prev_pair = (prev_pair.1, next);
+                } else {
+                    return 0;
+                }
             }
+
+            1
         })
         .sum()
 }
