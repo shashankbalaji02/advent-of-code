@@ -5,13 +5,22 @@ edition = "2021"
 
 [dependencies]
 
+[dev-dependencies]
+criterion = "0.5.1"
+
 [lib]
 name = "advent_of_code"
 
 [[bin]]
 name = "day_1"
-bench = true
+
+[[bench]]
+name = "day_1"
+harness = false
 
 [[bin]]
 name = "day_2"
-bench = true
+
+[[bench]]
+name = "day_2"
+harness = false

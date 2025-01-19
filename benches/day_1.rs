@@ -1,24 +1,18 @@
-#![feature(test)]
-extern crate test;
-use test::Bencher;
 use advent_of_code::solutions::day_1::*;
+use criterion::{criterion_group, criterion_main, Criterion};
 
 const INPUT_FILENAME: &str = concat!(env!("INPUT_DIR"), "/day_1.txt");
 
-#[bench]
-fn iter_algo_bench(bencher: &mut Bencher) {
+fn bench(c: &mut Criterion) {
     let (mut a, mut b) = parse_input(INPUT_FILENAME);
+    assert_eq!(a.len(), b.len(), "Columns are of unequal length");
     a.sort();
     b.sort();
-    assert_eq!(a.len(), b.len(), "Columns are of unequal length");
-    bencher.iter(|| iter_algo(&a, &b));
+    let mut group = c.benchmark_group("iter vs. for loop");
+    group.bench_function("iter", |bencher| bencher.iter(|| iter_algo(&a, &b)));
+    group.bench_function("for loop", |bencher| bencher.iter(|| for_loop_algo(&a, &b)));
+    group.finish();
 }
 
-#[bench]
-fn for_loop_algo_bench(bencher: &mut Bencher) {
-    let (mut a, mut b) = parse_input(INPUT_FILENAME);
-    a.sort();
-    b.sort();
-    assert_eq!(a.len(), b.len(), "Columns are of unequal length");
-    bencher.iter(|| for_loop_algo(&a, &b));
-}
+criterion_group!(benches, bench);
+criterion_main!(benches);
