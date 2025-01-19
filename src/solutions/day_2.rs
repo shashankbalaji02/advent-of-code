@@ -99,3 +99,69 @@ pub fn split_loop_naive(input: &Vec<Vec<u32>>) -> u32 {
     }
     safe_records
 }
+
+pub fn evaluate_string(input: &str) -> u32 {
+    let mut current: u32 = 0;
+    let mut prev: u32 = 0;
+    let mut i: u32 = 0;
+    let mut new_number = true;
+    let mut increasing = false;
+    let mut skip_line = false;
+    let mut safe_records = 0;
+
+    for c in input.chars().chain(once('\n')) {
+        if skip_line && c != '\n' {
+            continue;
+        }
+        match c {
+            /* parse numbers */
+            '0'..='9' => {
+                if new_number {
+                    prev = current;
+                    current = c as u32 - '0' as u32;
+                    new_number = false;
+                } else {
+                    current = 10*current + (c as u32 - '0' as u32);
+                }
+            },
+            /* core logic: compare current and previous numbers */
+            ' ' => {
+                i += 1;
+                new_number = true;
+                if i == 2 {
+                    increasing = current > prev;
+                }
+                if i >= 2 {
+                    let diff = current as i32 - prev as i32;
+                    if !(increasing && 1 <= diff && diff <= 3 ||
+                        !increasing && -3 <= diff && diff <= -1) {
+                        skip_line = true;
+                    }
+                }
+            },
+            /* take care of the last pair and state initialization for the next iteration */
+            '\n' => {
+                if !skip_line {
+                    if i <= 1 {
+                        safe_records += 1;
+                    }
+                    let diff = current as i32 - prev as i32;
+                    if increasing && 1 <= diff && diff <= 3 ||
+                      !increasing && -3 <= diff && diff <= -1 {
+                        safe_records += 1;
+                    }
+                }
+                current = 0;
+                prev = 0;
+                i = 0;
+                new_number = true;
+                increasing = false;
+                skip_line = false;
+            },
+            _ => {
+                unreachable!("Character not recognized");
+            }
+        }
+    }
+    safe_records
+}

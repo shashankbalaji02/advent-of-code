@@ -14,4 +14,5 @@ fn test_equivalence() {
     let answer = task(&parse_input(&input));
     assert_eq!(combined(&input), answer);
     assert_eq!(split_loop_naive(&parse_input(&input)), answer);
+    assert_eq!(evaluate_string(&input), answer);
 }

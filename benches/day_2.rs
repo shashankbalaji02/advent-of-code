@@ -8,9 +8,10 @@ fn bench(c: &mut Criterion) {
     let input_string = read_to_string(INPUT_FILENAME).expect("Failed to read input");
     let input = parse_input(&input_string);
 
-    let mut group = c.benchmark_group("combined vs. naive");
+    let mut group = c.benchmark_group("combined vs. naive vs. string evaluation");
     group.bench_function("combined", |bencher| bencher.iter(|| combined(&input_string)));
     group.bench_function("naive", |bencher| bencher.iter(|| task(&parse_input(&input_string))));
+    group.bench_function("string evaluation", |bencher| bencher.iter(|| evaluate_string(&input_string)));
     group.finish();
 
     group = c.benchmark_group("(naive) split loop vs. combined loop");
