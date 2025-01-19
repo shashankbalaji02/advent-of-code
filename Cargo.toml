@@ -5,9 +5,13 @@ edition = "2021"
 
 [dependencies]
 
+[lib]
+name = "advent_of_code"
 
 [[bin]]
-name = "1"
+name = "day_1"
+bench = true
 
 [[bin]]
-name = "2"
+name = "day_2"
+bench = true
