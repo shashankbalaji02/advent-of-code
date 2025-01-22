@@ -24,3 +24,10 @@ name = "day_2"
 [[bench]]
 name = "day_2"
 harness = false
+
+[[bin]]
+name = "day_4"
+
+[[bench]]
+name = "day_4"
+harness = false
